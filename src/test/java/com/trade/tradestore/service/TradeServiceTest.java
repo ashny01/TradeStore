@@ -4,7 +4,6 @@ import com.trade.tradestore.dto.TradeRequest;
 import com.trade.tradestore.dto.TradeResponse;
 import com.trade.tradestore.model.Trade;
 import com.trade.tradestore.repository.TradeRepository;
-import com.trade.tradestore.service.TradeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;

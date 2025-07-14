@@ -1,7 +1,6 @@
 package com.trade.tradestore.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.trade.tradestore.controller.TradeController;
 import com.trade.tradestore.dto.TradeRequest;
 import com.trade.tradestore.dto.TradeResponse;
 import com.trade.tradestore.kafka.TradeProducer;
@@ -10,10 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.mockito.Mock;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -33,10 +30,10 @@ class TradeControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private TradeService tradeService;
 
-    @MockBean
+    @MockitoBean
     private TradeProducer tradeProducer;
 
     @Autowired
@@ -101,14 +98,12 @@ class TradeControllerTest {
     }
     @Test
     void shouldReturnBadRequestForInvalidTradeRequest() throws Exception {
-        TradeRequest invalidRequest = new TradeRequest("T4", -1, "", "", LocalDate.now().plusDays(1));
-
-        when(tradeService.saveTrade(invalidRequest))
-                .thenThrow(new IllegalArgumentException("Invalid trade request."));
+        // Create JSON with invalid data that will fail validation
+        String invalidJson = "{\"tradeId\":\"\",\"version\":-1,\"counterPartyId\":\"\",\"bookId\":\"\",\"maturityDate\":\"2025-07-15\"}";
 
         mockMvc.perform(post("/api/trades")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(invalidRequest)))
+                        .content(invalidJson))
                 .andExpect(status().isBadRequest());
     }
 

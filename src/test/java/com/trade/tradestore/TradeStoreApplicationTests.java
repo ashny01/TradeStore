@@ -2,12 +2,14 @@ package com.trade.tradestore;
 
 
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
-@SpringBootTest(properties = {
-  "spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration,org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration",
-  "spring.kafka.bootstrap-servers=localhost:9092"
-})
+@SpringBootTest
+@AutoConfigureDataMongo
+// Removed exclusion of MongoAutoConfiguration to allow Spring Boot to configure MongoDB beans
+
 class TradeStoreApplicationTests {
     @Test
     void contextLoads() {

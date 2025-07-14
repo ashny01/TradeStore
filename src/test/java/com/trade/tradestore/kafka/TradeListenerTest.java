@@ -1,7 +1,6 @@
 package com.trade.tradestore.kafka;
 
 import com.trade.tradestore.dto.TradeRequest;
-import com.trade.tradestore.kafka.TradeListener;
 import com.trade.tradestore.service.TradeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

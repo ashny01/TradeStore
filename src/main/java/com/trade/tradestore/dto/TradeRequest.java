@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
