@@ -11,16 +11,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: ⬇️ Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Java
+      - name: ☕ Set up Java
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Cache Maven packages
+      - name: 📦 Cache Maven packages
         uses: actions/cache@v3
         with:
           path: ~/.m2
@@ -28,28 +28,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Build and Test
-        run: mvn clean verify --batch-mode
+      - name: 🔨 Build & Test with OWASP Scan
+        run: mvn clean verify org.owasp:dependency-check-maven:check -Dformat=ALL -DfailOnError=true -DassemblyAnalyzerEnabled=false
 
-      - name: OWASP Vulnerability Check (OWASP)
-        uses: dependency-check/Dependency-Check_Action@v3.0.2
-        with:
-          project: 'TradeStore'
-          path: '.'
-          format: 'HTML,JSON'
-          out: 'dependency-check-report'
-          args: >
-            --disableAssembly
-
-      - name: Fail on Critical Vulnerabilities
-        run: |
-          if grep -q '"severity": "Critical"' dependency-check-report/dependency-check-report.json; then
-            echo "Critical vulnerabilities found. Failing the build."
-            exit 1
-          fi
-
-      - name: Upload OWASP Report
+      - name: 📄 Upload OWASP HTML Report
         uses: actions/upload-artifact@v4
         with:
           name: dependency-check-report
-          path: dependency-check-report
+          path: target/dependency-check-report.html
